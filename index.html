@@ -24,6 +24,7 @@
             font-size: 16px;
             border-radius: 5px;
             cursor: pointer;
+            margin-right: 10px;
         }
         .btn:hover {
             background-color: #45a049;
@@ -38,12 +39,23 @@
     </div>
     <div class="form-group">
         <label for="chave-pix">Chave PIX:</label>
-        <input type="text" id="chave-pix" placeholder="Digite sua chave PIX">
+        <input type="text" id="chave-pix" value="jonathanalmeida1806@gmail.com" readonly>
         <button class="btn" onclick="copiarChavePix()">Copiar Chave PIX</button>
     </div>
     <div class="form-group">
         <label for="telefone">Telefone:</label>
         <input type="text" id="telefone" placeholder="Digite seu telefone">
+    </div>
+    <div class="form-group">
+        <label for="valor">Valor:</label>
+        <span>$10</span>
+    </div>
+    <div class="form-group">
+        <label for="data">Data:</label>
+        <span>21/06 sexta-feira</span>
+    </div>
+    <div class="form-group">
+        <button class="btn" onclick="enviarWhatsApp()">Enviar WhatsApp</button>
     </div>
     
     <script>
@@ -54,7 +66,14 @@
             document.execCommand('copy');
             alert('Chave PIX copiada para a área de transferência!');
         }
+
+        function enviarWhatsApp() {
+            var nome = document.getElementById('nome').value;
+            var telefone = document.getElementById('telefone').value;
+            var mensagem = `Olá, gostaria de enviar o comprovante de pagamento.\n\nNome: ${nome}\nChave PIX: jonathanalmeida1806@gmail.com\nValor: $10\nData: 21/06 sexta-feira`;
+            var url = `https://wa.me/75991955845/?text=${encodeURIComponent(mensagem)}`;
+            window.open(url, '_blank');
+        }
     </script>
 </body>
 </html>
-
