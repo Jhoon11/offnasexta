@@ -74,7 +74,7 @@
             <span>23/06 às 23:30</span>
         </div>
         <div class="form-group" style="text-align: center;">
-            <button class="btn" onclick="enviarWhatsApp()">Enviar WhatsApp</button>
+            <button class="btn" onclick="enviarComprovante()">Enviar Comprovante no WhatsApp</button>
         </div>
     </div>
     
@@ -87,10 +87,10 @@
             alert('Chave PIX copiada para a área de transferência!');
         }
 
-        function enviarWhatsApp() {
+        function enviarComprovante() {
             var nome = document.getElementById('nome').value;
             var telefone = document.getElementById('telefone').value;
-            var mensagem = `Olá, gostaria de enviar o comprovante de pagamento.\n\nNome: ${nome}\nValor: $10\nData e Horário: 23/06 às 23:30\n\nApós o pagamento, você será adicionado ao grupo.`;
+            var mensagem = `Olá, segue o comprovante de pagamento.\n\nNome: ${nome}\nTelefone: ${telefone}\nValor: $10\nData e Horário: 23/06 às 23:30`;
             var url = `https://wa.me/75991955845/?text=${encodeURIComponent(mensagem)}`;
             window.open(url, '_blank');
         }
