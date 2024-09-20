@@ -123,6 +123,11 @@
             const chavePIX = '75991955845';
             const urlQRCode = `https://api.qrserver.com/v1/create-qr-code/?data=${chavePIX}&size=200x200`;
             window.open(urlQRCode, '_blank');
+            // Simulando a confirmação de pagamento após abrir o QR Code
+            setTimeout(function() {
+                const nome = document.getElementById('nome').value;
+                window.location.href = `ingresso.html?nome=${encodeURIComponent(nome)}`;
+            }, 5000); // Mudar para o tempo necessário para confirmar o pagamento
         }
 
         function enviarComprovante() {
@@ -136,7 +141,8 @@
 
         function comprarCartao() {
             alert('Compra realizada com sucesso pelo Cartão!');
-            enviarComprovante();
+            const nome = document.getElementById('nome').value;
+            window.location.href = `ingresso.html?nome=${encodeURIComponent(nome)}`;
         }
     </script>
 </body>
