@@ -46,6 +46,24 @@
         .btn:hover {
             background-color: #45a049;
         }
+        #timer {
+            font-size: 20px;
+            color: red;
+            text-align: center;
+        }
+        #progress-bar {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        #progress {
+            height: 20px;
+            background-color: #4CAF50;
+            width: 100%;
+            transition: width 1s;
+        }
         .qr-code {
             text-align: center;
             margin: 15px 0;
@@ -81,7 +99,6 @@
             <select id="pagamento" style="width: 100%;">
                 <option value="pix">PIX</option>
                 <option value="cartao">Cartão de Crédito</option>
-                <option value="boleto">Boleto</option>
             </select>
         </div>
         <div class="form-group" id="cartao-info" style="display: none;">
@@ -99,7 +116,11 @@
             <button class="btn" onclick="abrirQRCode()">Acessar QR Code</button>
         </div>
         <div class="form-group" style="text-align: center;">
-            <button class="btn" onclick="enviarComprovante()">Comprar Ingresso via WhatsApp</button>
+            <button class="btn" onclick="iniciarPagamento()">Comprar Ingresso via WhatsApp</button>
+        </div>
+        <div id="timer"></div>
+        <div id="progress-bar">
+            <div id="progress"></div>
         </div>
     </div>
     
@@ -119,30 +140,60 @@
             }
         });
 
+        let timerInterval;
+
+        function iniciarPagamento() {
+            const nome = document.getElementById('nome').value;
+            const telefone = document.getElementById('telefone').value;
+            const pagamento = document.getElementById('pagamento').value;
+            const tempoTotal = 300; // 5 minutos em segundos
+            let tempoRestante = tempoTotal;
+
+            timerInterval = setInterval(() => {
+                if (tempoRestante <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Tempo esgotado! O pagamento não foi confirmado.");
+                    return;
+                }
+                tempoRestante--;
+                atualizarTempo(tempoRestante);
+            }, 1000);
+
+            document.getElementById('progress').style.width = '100%';
+
+            let largura = 100;
+            const progressInterval = setInterval(() => {
+                if (largura <= 0) {
+                    clearInterval(progressInterval);
+                    return;
+                }
+                largura--;
+                document.getElementById('progress').style.width = largura + '%';
+            }, (tempoTotal * 10)); // 5 minutos
+        }
+
+        function atualizarTempo(tempoRestante) {
+            const minutos = Math.floor(tempoRestante / 60);
+            const segundos = tempoRestante % 60;
+            document.getElementById('timer').innerText = `Tempo restante: ${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
+        }
+
         function abrirQRCode() {
             const chavePIX = '75991955845';
             const urlQRCode = `https://api.qrserver.com/v1/create-qr-code/?data=${chavePIX}&size=200x200`;
             window.open(urlQRCode, '_blank');
-            // Simulando a confirmação de pagamento após abrir o QR Code
-            setTimeout(function() {
+            setTimeout(() => {
+                clearInterval(timerInterval);
+                alert("Pagamento confirmado! Abrindo ingresso...");
                 const nome = document.getElementById('nome').value;
-                window.location.href = `ingresso.html?nome=${encodeURIComponent(nome)}`;
-            }, 5000); // Mudar para o tempo necessário para confirmar o pagamento
-        }
-
-        function enviarComprovante() {
-            const nome = document.getElementById('nome').value;
-            const telefone = document.getElementById('telefone').value;
-            const pagamento = document.getElementById('pagamento').value;
-            const mensagem = `Olá, confirmei a compra do ingresso.\n\nNome: ${nome}\nTelefone: ${telefone}\nValor: R$ 50\nData e Horário: 21/06 às 23:30\nForma de Pagamento: ${pagamento}`;
-            const url = `https://wa.me/75991955845/?text=${encodeURIComponent(mensagem)}`;
-            window.open(url, '_blank');
+                window.open(`ingresso.html?nome=${encodeURIComponent(nome)}`, '_blank');
+            }, 5000); // Simulação de confirmação do pagamento após 5 segundos
         }
 
         function comprarCartao() {
             alert('Compra realizada com sucesso pelo Cartão!');
             const nome = document.getElementById('nome').value;
-            window.location.href = `ingresso.html?nome=${encodeURIComponent(nome)}`;
+            window.open(`ingresso.html?nome=${encodeURIComponent(nome)}`, '_blank');
         }
     </script>
 </body>
