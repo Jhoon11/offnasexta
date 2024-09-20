@@ -30,15 +30,4 @@
     <div class="ingresso">
         <h2>Festa de Jonathan Almeida</h2>
         <p>Nome: <span id="nome"></span></p>
-        <p>Data: 21/06 às 23:30</p>
-        <p>Valor: R$ 50</p>
-    </div>
-
-    <script>
-        // Pega o nome do parâmetro na URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const nome = urlParams.get('nome');
-        document.getElementById('nome').innerText = nome || 'Desconhecido';
-    </script>
-</body>
-</html>
+        <p>Data: 21/06 às 
