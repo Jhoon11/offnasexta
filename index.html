@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Off de Jonathan Almeida</title>
+    <title>Venda de Ingressos - Festa de Jonathan Almeida</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -51,15 +51,10 @@
 </head>
 <body>
     <div class="form-container">
-        <h1 style="text-align: center;">Formulário Chave PIX - Off de Jonathan Almeida</h1>
+        <h1 style="text-align: center;">Venda de Ingressos - Festa de Jonathan Almeida</h1>
         <div class="form-group">
             <label for="nome">Nome:</label>
             <input type="text" id="nome" placeholder="Digite seu nome" style="width: 100%;">
-        </div>
-        <div class="form-group">
-            <label for="chave-pix">Chave PIX:</label>
-            <input type="text" id="chave-pix" value="jonathanalmeida1806@gmail.com" readonly style="width: 100%;">
-            <button class="btn" onclick="copiarChavePix()">Copiar Chave PIX</button>
         </div>
         <div class="form-group">
             <label for="telefone">Telefone:</label>
@@ -67,31 +62,50 @@
         </div>
         <div class="form-group">
             <label for="valor">Valor:</label>
-            <span>$10</span>
+            <span>R$ 50</span>
         </div>
         <div class="form-group">
             <label for="data">Data e Horário:</label>
             <span>21/06 às 23:30</span>
         </div>
+        <div class="form-group">
+            <label for="pagamento">Forma de Pagamento:</label>
+            <select id="pagamento" style="width: 100%;">
+                <option value="pix">PIX</option>
+                <option value="cartao">Cartão de Crédito</option>
+                <option value="boleto">Boleto</option>
+            </select>
+        </div>
+        <div class="form-group" id="cartao-info" style="display: none;">
+            <h3>Informações do Cartão:</h3>
+            <label for="numero-cartao">Número do Cartão:</label>
+            <input type="text" id="numero-cartao" placeholder="Digite o número do cartão" style="width: 100%;">
+            <label for="vencimento">Data de Vencimento:</label>
+            <input type="text" id="vencimento" placeholder="MM/AA" style="width: 100%;">
+            <label for="cvv">CVV:</label>
+            <input type="text" id="cvv" placeholder="Digite o CVV" style="width: 100%;">
+        </div>
         <div class="form-group" style="text-align: center;">
-            <button class="btn" onclick="enviarComprovante()">Enviar Comprovante no WhatsApp</button>
+            <button class="btn" onclick="enviarComprovante()">Comprar Ingresso</button>
         </div>
     </div>
     
     <script>
-        function copiarChavePix() {
-            var chavePix = document.getElementById('chave-pix');
-            chavePix.select();
-            chavePix.setSelectionRange(0, 99999); /* Para dispositivos móveis */
-            document.execCommand('copy');
-            alert('Chave PIX copiada para a área de transferência!');
-        }
+        document.getElementById('pagamento').addEventListener('change', function() {
+            const cartaoInfo = document.getElementById('cartao-info');
+            if (this.value === 'cartao') {
+                cartaoInfo.style.display = 'block';
+            } else {
+                cartaoInfo.style.display = 'none';
+            }
+        });
 
         function enviarComprovante() {
-            var nome = document.getElementById('nome').value;
-            var telefone = document.getElementById('telefone').value;
-            var mensagem = `Olá, segue o comprovante de pagamento.\n\nNome: ${nome}\nTelefone: ${telefone}\nValor: $10\nData e Horário: 23/06 às 23:30`;
-            var url = `https://wa.me/75991955845/?text=${encodeURIComponent(mensagem)}`;
+            const nome = document.getElementById('nome').value;
+            const telefone = document.getElementById('telefone').value;
+            const pagamento = document.getElementById('pagamento').value;
+            const mensagem = `Olá, confirmei a compra do ingresso.\n\nNome: ${nome}\nTelefone: ${telefone}\nValor: R$ 50\nData e Horário: 21/06 às 23:30\nForma de Pagamento: ${pagamento}`;
+            const url = `https://wa.me/75991955845/?text=${encodeURIComponent(mensagem)}`;
             window.open(url, '_blank');
         }
     </script>
